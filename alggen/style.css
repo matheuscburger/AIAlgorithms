@@ -1,0 +1,30 @@
+
+
+body {
+    font-family: arial, helvetica, sans-serif;
+}
+
+.label {
+    min-width: 200px;
+    float: left;
+}
+
+
+input[type='text'] {
+    width: 100px;
+}
+
+#start {
+    float: right;
+}
+
+#params {
+    width: 300px;
+}
+
+.binary {
+    float: left;
+    width: 200px;
+} 
+.decimal {
+} 

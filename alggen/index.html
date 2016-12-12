@@ -1,0 +1,37 @@
+<html>
+    <head>
+	<meta chartset='UTF-8'></meta>
+        <link rel="stylesheet" type="text/css" href="./style.css">
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+        <script src="alggen.js"></script>
+        <title>Genetic Algorithm</title>
+    </head>
+    <body>
+        <h1>Genetic Algorithm</h1>
+        <div id='params'>
+        <form>
+            <div class='label'><label>Number of chromosomes: </label></div> <input id="nind" type='text' value='100'></input><br/>
+            <div class='label'><label>Pobability of mutation: </label></div> <input id="probmut" type='text' value='0.01'></input><br/>
+            <div class='label'><label>Probability of crossover: </label></div> <input id="probcross" type='text' value='0.4'></input><br/>
+            <div class='label'><label>Proportion of selected: </label></div> <input id="propsel" type='text' value='0.3'></input><br/>
+            <div class='label'><label>Function: </label></div> <input id="fun" type='text' value='-1*x**2'></input><br/><br/>
+            <input type='button' value='Start!' id='start'></input>
+        </form>
+        <div id='control'>
+            <input id='pause' type='button' value='| |'></input>
+            <input id='next' type='button' value='&gt;'></input>
+            <input id='run' type='button' value='&gt;&gt;'></input>
+            Generation: <span id='generation'></span>
+        </div>
+        </div>
+        <div id='container'>
+            <div id='graphic'>
+            </div>
+            <div id='best'>
+            </div>
+            <div id='chromosomes'>
+            </div>
+        </div> 
+        <script src="visualization.js"></script>
+    </body>
+</html>
