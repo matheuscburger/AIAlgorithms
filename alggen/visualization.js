@@ -12,11 +12,16 @@ function startAlg(){
 }
 $('#start').click(function(){ startAlg(); return false; });
 
+
+var timeout = 50;
 function run_genalg(){
-    do {
+    timer = setInterval(function() {
         genalg.nextgen();
         updateInfo();
-    } while(run);
+		if(!run){
+		    clearInterval(timer);
+		}
+    }, timeout);
 }
 
 $('#pause').click(function(){ run = false; return false; });
@@ -42,6 +47,6 @@ function allchromosomes(){
 
 function updateInfo(){
     $('#generation').text(genalg.generation);
-    $('#chromosomes').html(allchromosomes());
-    
+	var chromes = allchromosomes();
+    $('#chromosomes').html(chromes);
 }
