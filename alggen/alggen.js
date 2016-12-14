@@ -1,4 +1,101 @@
 
+function float2binary(value){
+    var signal = [(value > 0)? 0:1];
+    value = Math.abs(value);
+    var integer = Math.floor(value);
+    var frac = value - integer;
+    var bin_frac = frac2binary(frac);
+    var mantissa, exponent = 0;
+    if(integer != 0){
+        var bin_int = integer2binary(integer);
+        mantissa = bin_int.concat(bin_frac).slice(1,24);
+        exponent = bin_int.length - 1;
+    } else {
+        mantissa = bin_frac;
+	do{
+	    first_bit = mantissa.shift();
+	    exponent -= 1;
+        }while(first_bit == 0);
+        mantissa = mantissa.slice(0,23);
+    }
+    mantissa = mantissa.concat(Array(23 - mantissa.length).fill(0));
+    var norm_exp = 127 + exponent;
+    var bin_exp = integer2binary(norm_exp);
+    if(bin_exp.length > 8){
+        console.warn("Exponent greater than expected");
+    } else {
+        bin_exp = Array(8 - bin_exp.length).fill(0).concat(bin_exp);
+    }
+    return(signal.concat(bin_exp).concat(mantissa));
+}
+
+function frac2binary(value){
+    if(value >= 1){
+        console.warn("Value greater than one.");
+	value -= Math.floor(Math.abs(value));
+    }
+    var new_value, new_integer, count = 0, res = [];
+    while(value != 0 && count < 32){
+        new_value = value * 2;
+        new_integer = Math.floor(new_value);
+	res.push(new_integer);
+	value = new_value - new_integer;
+        count += 1;
+    }
+    return res;
+}
+
+function integer2binary(value){
+    // converts integer to binary
+    var res = [];
+    var div = Math.abs(value);
+    do {
+        var rem = div % 2;
+        div = Math.floor(div / 2);
+        res.unshift(rem);
+    } while(div != 0);
+    return(res);
+}
+
+function binary2float(arr){
+    var signal = (arr[0] == 0)? 1:-1;
+    var exponent = binary2integer(arr.slice(1,9)) - 127;
+    var bin_mantissa = arr.slice(9, arr.length);
+    var integer = 0, frac_bin, frac, res;
+    if(exponent < 0){
+        bin_mantissa.unshift(1);
+	exponent++;
+	while(exponent < 0){
+	    bin_mantissa.unshift(0);
+	    exponent++;
+	}
+	res = binary2frac(bin_mantissa);
+    } else {
+        frac_bin = bin_mantissa.splice(exponent);
+        frac = binary2frac(frac_bin);
+	bin_mantissa.unshift(1);
+	integer = binary2integer(bin_mantissa);
+	res = integer + frac;
+    }
+    return(res*signal);
+}
+
+function binary2integer(arr){
+    var res = 0;
+    for(var i=0; i < arr.length; i++){
+        res += arr[i] * Math.pow(2, arr.length-1-i);
+    }
+    return(res);
+}
+
+function binary2frac(arr){
+    var res = 0;
+    for(var i=0; i < arr.length; i++){
+        res += arr[i] * Math.pow(2, -i-1);
+    }
+    return(res);
+}
+
 //classe cromossomo
 // recebe um numero inteiro
 // cria um vetor binario que representa o inteiro
@@ -7,41 +104,8 @@
 //metodo cross
 // recebe outro cromossomo e realiza crossover em ponto aleatorio
 
-function decimal2binary(value, length){
-    // converts decimal to binary
-    var res = [];
-    var div = Math.abs(value);
-    do {
-        var rem = div % 2;
-        div = Math.floor(div / 2);
-        res.unshift(rem);
-    } while(div != 0);
-    for(var i=res.length; i < length; i++){
-        res.unshift(0);
-    }
-    if(res.length > length){
-        console.warn("Binary vector is bigger than expected!");
-    }
-    if(value < 0){
-        res.unshift(0);
-    } else {
-        res.unshift(1);
-    }
-    return(res);
-}
-
-function binary2decimal(arr){
-    var res = 0;
-    sign = arr[0] == 0 ? -1:1;
-    for(var i=1; i < arr.length; i++){
-        res += arr[i] * 2**(arr.length-1-i);
-    }
-    return(res * sign);
-}
-
-var Chromosome = function(value, length){
-    this.length = length;
-    this.chrom = decimal2binary(parseInt(value), length);
+var Chromosome = function(value){
+    this.chrom = float2binary(value);
 }
 
 Chromosome.prototype.mutate = function(prob){
@@ -83,13 +147,13 @@ var GenAlg = function(num_ind, mut, cross, sel, fitness){
     this.individues = [];
     for(var i=0; i < num_ind; i++){
         var sign = Math.random() > .5? 1:-1;
-        chr = new Chromosome(Math.floor(Math.random() * 255) * sign, 8);
+        chr = new Chromosome(Math.random() * 10000 * sign);
         this.individues.unshift(chr);
     }
 }
 
 GenAlg.prototype.fitness = function(chromossome){
-    x = binary2decimal(chromossome.chrom);
+    x = binary2float(chromossome.chrom);
     return(eval(this.fitness_str));
 }
 
@@ -120,9 +184,9 @@ GenAlg.prototype.nextgen = function(){
     while(nextgen_ind.length < this.num_ind){
         //select randomly two individues from selected array
         index1 = Math.floor(Math.random() * this.individues.length);
-        chr1 = new Chromosome(binary2decimal(this.individues[index1].chrom), 8);
+        chr1 = new Chromosome(binary2float(this.individues[index1].chrom));
         index2 = Math.floor(Math.random() * this.individues.length);
-        chr2 = new Chromosome(binary2decimal(this.individues[index2].chrom), 8);
+        chr2 = new Chromosome(binary2float(this.individues[index2].chrom));
         if(Math.random() < this.cross_prob){
             crossover(chr1, chr2);
         }

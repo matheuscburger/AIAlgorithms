@@ -31,7 +31,7 @@ $('#run').click(function(){ run = true; run_genalg(); return false; });
 function chromosome2divs(chr){
     res = "<div class='individual'>";
     res += "<div class='binary'>" + chr.chrom.join(" ") + "</div>";
-    res += "<div class='decimal'>" + binary2decimal(chr.chrom) + "</div>";
+    res += "<div class='decimal'>" + binary2float(chr.chrom).toFixed(5) + "</div>";
     res += "</div>";
     return(res);
 }
