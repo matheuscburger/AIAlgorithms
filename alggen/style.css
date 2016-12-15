@@ -2,10 +2,24 @@
 
 body {
     font-family: arial, helvetica, sans-serif;
+    font-size: large;
+    margin: 0px;
+}
+
+header {
+    color: white;
+    background-color: black;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 10px;
+}
+
+header>h1 {
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .label {
-    min-width: 200px;
+    min-width: 220px;
     float: left;
 }
 
@@ -19,12 +33,49 @@ input[type='text'] {
 }
 
 #params {
-    width: 300px;
+    width: 320px;
+    margin: 10px;
+}
+
+#chromosomes {
+    margin-left: 5px;
+}
+
+#binary_header {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+#decimal_header {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    margin-left: 2px;
+    text-align: center;
+}
+
+.individual {
+    clear: both;
 }
 
 .binary {
     float: left;
-    width: 500px;
+    width: 490px;
+    text-align: left;
 } 
 .decimal {
+    width: 100px;
+    float: left;
+    text-align: right;
 } 
+
+.signal {
+    background-color: rgba(255, 204, 183, 0.5);
+}
+.exponent {
+    background-color: rgba(213, 255, 192, 0.5);
+}
+.mantissa {
+    background-color: rgba(134, 144, 255, 0.25);
+}
