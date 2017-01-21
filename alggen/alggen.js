@@ -12,9 +12,9 @@ function float2binary(value){
         exponent = bin_int.length - 1;
     } else {
         mantissa = bin_frac;
-	do{
-	    first_bit = mantissa.shift();
-	    exponent -= 1;
+    do{
+        first_bit = mantissa.shift();
+        exponent -= 1;
         }while(first_bit == 0);
         mantissa = mantissa.slice(0,23);
     }
@@ -32,14 +32,14 @@ function float2binary(value){
 function frac2binary(value){
     if(value >= 1){
         console.warn("Value greater than one.");
-	value -= Math.floor(Math.abs(value));
+    value -= Math.floor(Math.abs(value));
     }
     var new_value, new_integer, count = 0, res = [];
     while(value != 0 && count < 32){
         new_value = value * 2;
         new_integer = Math.floor(new_value);
-	res.push(new_integer);
-	value = new_value - new_integer;
+    res.push(new_integer);
+    value = new_value - new_integer;
         count += 1;
     }
     return res;
@@ -64,18 +64,18 @@ function binary2float(arr){
     var integer = 0, frac_bin, frac, res;
     if(exponent < 0){
         bin_mantissa.unshift(1);
-	exponent++;
-	while(exponent < 0){
-	    bin_mantissa.unshift(0);
-	    exponent++;
-	}
-	res = binary2frac(bin_mantissa);
+    exponent++;
+    while(exponent < 0){
+        bin_mantissa.unshift(0);
+        exponent++;
+    }
+    res = binary2frac(bin_mantissa);
     } else {
         frac_bin = bin_mantissa.splice(exponent);
         frac = binary2frac(frac_bin);
-	bin_mantissa.unshift(1);
-	integer = binary2integer(bin_mantissa);
-	res = integer + frac;
+    bin_mantissa.unshift(1);
+    integer = binary2integer(bin_mantissa);
+    res = integer + frac;
     }
     return(res*signal);
 }

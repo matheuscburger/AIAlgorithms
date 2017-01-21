@@ -63,6 +63,6 @@ function allchromosomes(){
 
 function updateInfo(){
     $('#generation').text(genalg.generation);
-	var chromes = allchromosomes();
+    var chromes = allchromosomes();
     $('#chromosomes').html(chromes);
 }
