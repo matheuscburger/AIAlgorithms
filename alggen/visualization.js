@@ -9,6 +9,7 @@ function startAlg(){
                     parseFloat($('#propsel').val()),
                     $('#fun').val());
     updateInfo();
+    updatePoints();
 }
 $('#start').click(function(){ startAlg(); return false; });
 
@@ -18,6 +19,7 @@ function run_genalg(){
     timer = setInterval(function() {
         genalg.nextgen();
         updateInfo();
+        updatePoints();
         if(!run){
             clearInterval(timer);
         }
@@ -65,4 +67,18 @@ function updateInfo(){
     $('#generation').text(genalg.generation);
     var chromes = allchromosomes();
     $('#chromosomes').html(chromes);
+}
+
+function getData(){
+    var data = [];
+    if(genalg != null){
+        var all_ind = genalg.individues;
+        for(var i = 0; i < all_ind.length; i++){
+            var x = binary2float(all_ind[i].chrom);
+            var y = eval(genalg.fitness_str);
+            data.push([x, y]);
+        }
+    }
+    return(data)
+
 }
