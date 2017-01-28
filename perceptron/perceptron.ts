@@ -1,7 +1,3 @@
-interface Vector {
-    values: Array<number>;
-}
-
 function inner_product (x:Array<number>, y:Array<number>):number {
     if (x.length != y.length) {
         throw new Error("Input arrays should have the same length!");
@@ -13,29 +9,50 @@ function inner_product (x:Array<number>, y:Array<number>):number {
     return(res);
 }
 
+interface Activation {
+    activate(x:number):number;
+    gradient(x:number):number;
+}
+
+class Step implements Activation {
+  constructor(){}
+  public activate (x:number):number {
+      let res:number = (x >= 0)?1:0;
+      return(res);
+  }
+
+  public gradient (x:number):number {
+      return(1)
+  }
+}
+
+class Logistic implements Activation {
+  constructor(){}
+  public activate (x:number):number {
+      let res:number;
+      res=1/(1 + Math.exp(-x)); // logistic function
+      return(res);
+  }
+
+  public gradient (x:number):number {
+      let log:number = this.activate(x);
+      let res:number = log*(1-log); // logistic derivative
+      return(res)
+  }
+}
 
 class Perceptron {
-    public weights:  Array<number>;
+    public weights: Array<number>;
     public learning_rate: number;
+    public activation: Activation;
 
-    constructor(len:number){
+    constructor(len:number, activation: Activation){
         this.learning_rate = 0.9;
+        this.activation = activation;
         this.weights = new Array(len+1);
         for(let i:number = 0; i <= len; i++){
             this.weights[i] = 0;
         }
-    }
-
-    public activation (x:number):number {
-        let res:number;
-        res=1/(1 + Math.exp(-x)); // logistic function
-        return(res);
-    }
-
-    public gradient (x:number):number {
-        let log:number = this.activation(x);
-        let res:number = log*(1-log); // logistic derivative
-        return(res)
     }
 
     public update_weights(features:Array<number>, real_output:number):void{
@@ -44,7 +61,7 @@ class Perceptron {
         let new_w:Array<number> = this.weights.slice(0);
         let output:number = this.predict(features);
         let error:number = (real_output - output);
-        let grad:number = this.gradient(inner_product(feat, this.weights));
+        let grad:number = this.activation.gradient(inner_product(feat, this.weights));
         for(let i:number=0; i < this.weights.length; i++){
             new_w[i] = this.weights[i] + this.learning_rate * error * grad * feat[i];
         }
@@ -77,7 +94,7 @@ class Perceptron {
     public predict(features:Array<number>):number{
         let feat:Array<number> = features.slice(0);
         feat.unshift(1); // add bias
-        let res:number = this.activation(inner_product(feat, this.weights));
+        let res:number = this.activation.activate(inner_product(feat, this.weights));
         return(res);
     }
 
@@ -87,11 +104,13 @@ class Perceptron {
 
 console.log(inner_product([1,2], [1,2]));
 
-let percep:Perceptron = new Perceptron(2);
+let logistic:Logistic = new Logistic();
+let step:Step = new Step();
+let percep:Perceptron = new Perceptron(2, step);
 let and_data = [[0, 0],
                 [0, 1],
                 [1, 0],
-                [1, 1]]
+                [1, 1]];
 
 let and_out = [0, 0, 0, 1];
 
