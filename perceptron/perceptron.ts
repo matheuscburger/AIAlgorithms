@@ -41,7 +41,13 @@ class Logistic implements Activation {
   }
 }
 
-class Perceptron {
+interface SupervisedAlgorithm {
+    train(arr_features:Array<Array<number>>,
+          outputs:Array<number>):void;
+    predict(features:Array<number>):any;
+}
+
+class Perceptron implements SupervisedAlgorithm {
     public weights: Array<number>;
     public learning_rate: number;
     public activation: Activation;
