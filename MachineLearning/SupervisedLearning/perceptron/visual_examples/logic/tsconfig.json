@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outFile": "js/tsc.js",
+        "sourceMap": true
+    },
+    "include": [
+        "*",
+        "../../*",
+        "../../../*"
+    ],
+    "exclude": [
+    ]
+}

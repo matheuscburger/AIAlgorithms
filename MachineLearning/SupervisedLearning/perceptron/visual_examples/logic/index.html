@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title> Perceptron - Logic Gates </title>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel='stylesheet' type='text/css' href='./style.css' />
+    <style >
+    </style>
+</head>
+<body>
+    <header>
+        <h1> Perceptron - Logic Gates </h1>
+    </header>
+    <div id='params'>
+        <form>
+            <div class='label'><label>Logic Gate: </label></div>
+            <select id="logic">
+                <option value='and' selected="">AND</option>
+                <option value='or'>OR</option>
+                <option value='nand'>NAND</option>
+                <option value='nor'>NOR</option>
+                <option value='xor'>XOR</option>
+            </select>
+            <br/>
+            <div class='label'><label>Activation Function: </label></div>
+            <select id="activation">
+                <option value='step' selected="">Step</option>
+                <option value='logistic'>Logistic</option>
+            </select>
+            <br/>
+            <br/>
+            <input type='button' value='Start!' id='start'></input>
+        </form>
+    </div>
+    <div id='control'>
+        <div>
+            <i class="fa fa-pause fa-1x" aria-hidden="true" id='pause'></i><!--<input id='pause' type='button' value='| |'></input>-->
+            <i class="fa fa-play fa-1x" aria-hidden="true" id='next'></i> <!--<input id='next' type='button' value='&gt;'></input> -->
+            <i class="fa fa-forward fa-1x" aria-hidden="true" id='run'></i> <!--<input id='run' type='button' value='&gt;&gt;'></input>-->
+        </div>
+        <div>Iteration: <span id='iteration'></span></div>
+    </div>
+    <div id='graphic'></div>
+    <script src="js/tsc.js"></script>
+    <script src="js/scatter.js"></script>
+    <script src="js/visualization.js"></script>
+</body>
+</html>
+
+
