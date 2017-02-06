@@ -54,7 +54,7 @@ export class Perceptron implements sa.SupervisedAlgorithm {
         this.activation = activation;
         this.weights = new Array(len+1);
         for(let i:number = 0; i <= len; i++){
-            this.weights[i] = 0;
+            this.weights[i] = Math.random();
         }
     }
 
